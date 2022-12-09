@@ -3,25 +3,41 @@ import { galleryItems } from './gallery-items.js'
 
 const gallery = document.querySelector('.gallery')
 
-galleryItems.forEach(item => {
-	const galleryItem = document.createElement('div')
-	const galleryLink = document.createElement('a')
-	const galleryImage = document.createElement('img')
+function createGalleryMarkup(items) {
+	return items
+		.map(
+			item => `<div class="gallery__item">
+    <a class="gallery__link" href="${item.original}">
+      <img
+        class="gallery__image"
+        src="${item.original}"
+        data-source="${item.original}"
+        alt="${item.description}"
+      />
+    </a>
+  </div>`
+		)
+		.join('')
+}
 
-	gallery.append(galleryItem)
-	galleryItem.classList.add('gallery__item')
+const addGalleryMarkup = createGalleryMarkup(galleryItems)
+gallery.innerHTML = addGalleryMarkup
 
-	galleryItem.append(galleryLink)
-	galleryLink.classList.add('gallery__link')
-	galleryLink.href = item.original
-	// blokujemy domyślne działanie kliknięcia w link:
-	galleryLink.addEventListener('click', e => {
-		e.preventDefault()
+gallery.addEventListener('click', onImageClick)
+
+function onImageClick(e) {
+	e.preventDefault()
+
+	if (e.target.nodeName !== 'IMG') {
+		return
+	}
+
+	const instance = basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`)
+	instance.show()
+
+	gallery.addEventListener('keydown', e => {
+		if (e.code === 'Escape') {
+			instance.close()
+		}
 	})
-
-	galleryLink.append(galleryImage)
-	galleryImage.classList.add('gallery__image')
-	galleryImage.src = item.preview
-	galleryImage.dataset.source = item.original
-	galleryImage.alt = item.description
-})
+}
