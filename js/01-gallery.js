@@ -10,7 +10,7 @@ function createGalleryMarkup(items) {
     <a class="gallery__link" href="${item.original}">
       <img
         class="gallery__image"
-        src="${item.original}"
+        src="${item.preview}"
         data-source="${item.original}"
         alt="${item.description}"
       />

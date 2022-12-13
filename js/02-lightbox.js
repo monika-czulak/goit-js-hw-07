@@ -1,4 +1,40 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from './gallery-items.js'
 // Change code below this line
 
-console.log(galleryItems);
+const gallery = document.querySelector('.gallery')
+
+function createGalleryMarkup(items) {
+	return items
+		.map(
+			item => `<a class="gallery__item" href="${item.original}">
+      <img
+        class="gallery__image"
+        src="${item.preview}"
+        alt="${item.description}"
+      />
+    </a>`
+		)
+		.join('')
+}
+
+const addGalleryMarkup = createGalleryMarkup(galleryItems)
+gallery.innerHTML = addGalleryMarkup
+
+gallery.addEventListener('click', onImageClick)
+
+function onImageClick(e) {
+	e.preventDefault()
+
+	if (e.target.nodeName !== 'IMG') {
+		return
+	}
+
+	const instance = basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`)
+	instance.show()
+
+	gallery.addEventListener('keydown', e => {
+		if (e.code === 'Escape') {
+			instance.close()
+		}
+	})
+}
