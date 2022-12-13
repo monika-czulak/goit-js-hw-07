@@ -6,13 +6,13 @@ const gallery = document.querySelector('.gallery')
 function createGalleryMarkup(items) {
 	return items
 		.map(
-			item => `<a class="gallery__item" href="${item.original}">
+			item => `<li><a class="gallery__item" href="${item.original}">
       <img
         class="gallery__image"
         src="${item.preview}"
         alt="${item.description}"
       />
-    </a>`
+    </a></li>`
 		)
 		.join('')
 }
@@ -29,12 +29,5 @@ function onImageClick(e) {
 		return
 	}
 
-	const instance = basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`)
-	instance.show()
-
-	gallery.addEventListener('keydown', e => {
-		if (e.code === 'Escape') {
-			instance.close()
-		}
-	})
+	const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 })
 }
