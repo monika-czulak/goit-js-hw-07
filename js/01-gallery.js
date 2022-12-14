@@ -36,7 +36,7 @@ function onImageClick(e) {
 	instance.show()
 
 	gallery.addEventListener('keydown', e => {
-		if (e.code === 'Escape') {
+		if (basicLightbox.visible() && e.code === 'Escape') {
 			instance.close()
 		}
 	})
