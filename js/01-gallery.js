@@ -35,9 +35,10 @@ function onImageClick(e) {
 	const instance = basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`)
 	instance.show()
 
-	gallery.addEventListener('keydown', e => {
+	gallery.addEventListener('keydown', function modalClose(e) {
 		if (basicLightbox.visible() && e.code === 'Escape') {
 			instance.close()
+			gallery.removeEventListener('keydown', modalClose)
 		}
 	})
 }
