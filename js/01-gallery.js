@@ -32,13 +32,17 @@ function onImageClick(e) {
 		return
 	}
 
-	const instance = basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`)
+	const instance = basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
+		onClose: () => {
+			gallery.removeEventListener('keydown', escapeClose)
+		},
+	})
 	instance.show()
 
-	gallery.addEventListener('keydown', function modalClose(e) {
+	const escapeClose = e => {
 		if (basicLightbox.visible() && e.code === 'Escape') {
 			instance.close()
-			gallery.removeEventListener('keydown', modalClose)
 		}
-	})
+	}
+	gallery.addEventListener('keydown', escapeClose)
 }
